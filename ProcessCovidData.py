@@ -8,7 +8,8 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 
 def ProcessData(filters):
-    # Get data from API.
+
+# Get data from API.
     dataStructure = {   
         "date": "date", 
         "areaName": "areaName", 
@@ -20,7 +21,8 @@ def ProcessData(filters):
 
     apiResult = objCV19.get_dataframe()
 
-    # Remove unused dates.
+# Remove dates older than 62 days ago and the newest few depending on time of day.
+
     earliestDate = date.today() - timedelta(days=62)
     earliestDate = earliestDate.strftime('%Y-%m-%d')
 
@@ -33,20 +35,20 @@ def ProcessData(filters):
     else:
         timeDeltaDays = 1
 
-    yesterday = date.today() - timedelta(days=timeDeltaDays)
-    yesterday = yesterday.strftime('%Y-%m-%d')
+    latestDate = date.today() - timedelta(days=timeDeltaDays)
+    latestDate = latestDate.strftime('%Y-%m-%d')
 
     df = apiResult
 
-    df = df[(df["date"] >= earliestDate) & (df["date"] < yesterday)]
+    df = df[(df["date"] >= earliestDate) & (df["date"] < latestDate)]
 
     df = df.sort_values(by="date")
 
-    # Calculate 7 day rolling averages.
+# Calculate 7 day rolling averages.
     df['newCases_SMA_7'] = df["newCases"].rolling(window=7).mean()
     df['newDeaths_SMA_7'] = df["newDeaths"].rolling(window=7).mean()
 
-    # Create figure.
+# Create figure.
     fig = plt.figure(figsize=[15,12])
     fig.set_grid = True
     ax1 = fig.add_subplot(2,1,1)
@@ -73,6 +75,6 @@ def ProcessData(filters):
     ax2.plot(df["date"], df["newDeaths_SMA_7"], label="7 Day Average of New Deaths")
     ax2.legend(loc=2)
 
-    # Return the dataframe and figure.
+# Return the dataframe and figure.
 
     return df, fig
