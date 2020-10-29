@@ -9,12 +9,12 @@ import matplotlib.dates as mdates
 
 def ProcessData(filters):
 
-# Get data from API.
+# Get data from API. (See https://coronavirus.data.gov.uk/developers-guide#structure-metrics)
     dataStructure = {   
         "date": "date", 
         "areaName": "areaName", 
         "newCases": "newCasesBySpecimenDate",  
-        "newDeaths": "newDeathsByDeathDate", 
+        "newDeaths": "newDeathsByDeathDate",
     } 
 
     objCV19 = cv.Cov19API(filters=filters, structure=dataStructure) 
