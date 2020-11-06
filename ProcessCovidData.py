@@ -31,9 +31,9 @@ def ProcessData(filters):
     current_time = now.strftime("%H:%M:%S")
 
     if current_time < "17:00:00":
-        timeDeltaDays = 2
+        timeDeltaDays = 4
     else:
-        timeDeltaDays = 1
+        timeDeltaDays = 3
 
     latestDate = date.today() - timedelta(days=timeDeltaDays)
     latestDate = latestDate.strftime('%Y-%m-%d')
